@@ -95,6 +95,25 @@ paths:
       responses:
         204:
           description: good post
+  /multipart/encoding/comma-separated:
+    post:
+      summary: Post multipart body with comma separated encoding of one part
+      operationId: post-multipart-encoding-comma-separated
+      requestBody:
+        content:
+          multipart/related:
+            schema:
+              type: object
+              properties:
+                image:
+                  type: string
+                  format: binary
+            encoding:
+              image:
+                contentType: test/plain
+      responses:
+        204:
+          description: good post
   /multipart/headers:
     post:
       summary: ---

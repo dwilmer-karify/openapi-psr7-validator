@@ -346,4 +346,34 @@ HTTP
         $validator->validate($serverRequest);
         $this->addToAssertionCount(1);
     }
+
+    public function testValidateMultipartEncodingCommaSeparatedGreen(): void
+    {
+        $specFile = __DIR__ . '/../../../stubs/multipart.yaml';
+
+        $message       = <<<HTTP
+POST /multipart/encoding/comma-separated HTTP/1.1
+Content-Length: 2740
+Content-Type: multipart/related; boundary=----WebKitFormBoundaryWfPNVh4wuWBlyEyQ
+
+------WebKitFormBoundaryWfPNVh4wuWBlyEyQ
+Content-Disposition: form-data; name="image"
+Content-ID: image
+Content-Type: image/jpg
+
+[file content goes there]
+------WebKitFormBoundaryWfPNVh4wuWBlyEyQ--
+HTTP;
+        $request       = parse_request($message); // convert a text HTTP message to a PSR7 message
+        $serverRequest = new ServerRequest(
+            $request->getMethod(),
+            $request->getUri(),
+            $request->getHeaders(),
+            $request->getBody()
+        );
+
+        $validator = (new ValidatorBuilder())->fromYamlFile($specFile)->getServerRequestValidator();
+        $validator->validate($serverRequest);
+        $this->addToAssertionCount(1);
+    }
 }
