@@ -110,7 +110,7 @@ paths:
                   format: binary
             encoding:
               image:
-                contentType: test/plain
+                contentType: image/jpeg, image/png, image/gif
       responses:
         204:
           description: good post

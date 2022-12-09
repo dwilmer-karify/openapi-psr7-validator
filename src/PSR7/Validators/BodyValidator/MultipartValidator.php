@@ -29,12 +29,14 @@ use Riverline\MultiPartParser\StreamedPart;
 use RuntimeException;
 
 use function array_replace;
+use function implode;
 use function in_array;
 use function is_array;
 use function json_decode;
 use function json_last_error;
 use function json_last_error_msg;
 use function preg_match;
+use function preg_split;
 use function sprintf;
 use function str_replace;
 use function strpos;
@@ -120,8 +122,10 @@ class MultipartValidator implements MessageValidator
                 $partContentType     = $part->getHeader(self::HEADER_CONTENT_TYPE);
                 $encodingContentType = $this->detectEncondingContentType($encoding, $part, $schema->properties[$partName]);
                 if (strpos($encodingContentType, '*') === false) {
-                    // strict comparison (ie "image/jpeg")
-                    if ($encodingContentType !== $partContentType) {
+                    // strict comparison on one or more content types (ie "image/jpeg" or "image/png, image/gif")
+                    $encodingContentTypes     = preg_split('/, ?/', $encodingContentType);
+                    $encodingContentTypeRegex = sprintf('#^%s$#', implode('|', $encodingContentTypes));
+                    if (! preg_match($encodingContentTypeRegex, $partContentType)) {
                         throw InvalidBody::becauseBodyDoesNotMatchSchemaMultipart(
                             $partName,
                             $partContentType,

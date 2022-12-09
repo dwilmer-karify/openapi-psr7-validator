@@ -359,7 +359,7 @@ Content-Type: multipart/related; boundary=----WebKitFormBoundaryWfPNVh4wuWBlyEyQ
 ------WebKitFormBoundaryWfPNVh4wuWBlyEyQ
 Content-Disposition: form-data; name="image"
 Content-ID: image
-Content-Type: image/jpg
+Content-Type: image/gif
 
 [file content goes there]
 ------WebKitFormBoundaryWfPNVh4wuWBlyEyQ--
